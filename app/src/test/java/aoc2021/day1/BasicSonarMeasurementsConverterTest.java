@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-class SonarMeasurementsConverterTest {
+class BasicSonarMeasurementsConverterTest {
 
-    private final SonarMeasurementsConverter sut = new SonarMeasurementsConverter();
+    private final BasicSonarMeasurementsConverter sut = new BasicSonarMeasurementsConverter();
 
     @Test
     public void convertListOfIntegerStrings() {
