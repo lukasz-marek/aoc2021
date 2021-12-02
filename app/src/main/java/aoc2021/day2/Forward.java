@@ -15,6 +15,13 @@ public class Forward implements Step {
     }
 
     @Override
+    public AimedPosition take(AimedPosition currentPosition) {
+        var nextHorizontal = currentPosition.getHorizontal() + offset;
+        var nextDepth = currentPosition.getDepth() + currentPosition.getAim() * offset;
+        return new AimedPosition(nextHorizontal, nextDepth, currentPosition.getAim());
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

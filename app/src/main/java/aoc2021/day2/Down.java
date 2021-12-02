@@ -15,6 +15,11 @@ public class Down implements Step {
     }
 
     @Override
+    public AimedPosition take(AimedPosition currentPosition) {
+        return new AimedPosition(currentPosition.getHorizontal(), currentPosition.getDepth(), currentPosition.getAim() + offset);
+    }
+
+    @Override
     public String toString() {
         return "Down{" +
                 "offset=" + offset +

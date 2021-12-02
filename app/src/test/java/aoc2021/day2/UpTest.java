@@ -18,4 +18,19 @@ class UpTest {
         Assertions.assertEquals(14, nextPosition.getDepth());
         Assertions.assertEquals(12, nextPosition.getHorizontal());
     }
+
+    @Test
+    public void takeAimReturnsCorrectValue() {
+        // given
+        var currentPosition = new AimedPosition(2, 3, 5);
+        var sut = new Up(3);
+
+        // when
+        var nextPosition = sut.take(currentPosition);
+
+        // then
+        Assertions.assertEquals(3, nextPosition.getDepth());
+        Assertions.assertEquals(2, nextPosition.getHorizontal());
+        Assertions.assertEquals(2, nextPosition.getAim());
+    }
 }

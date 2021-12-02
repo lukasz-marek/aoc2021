@@ -1,6 +1,6 @@
 package aoc2021.day2;
 
-public class Position {
+public final class Position {
     private final int horizontal;
     private final int depth;
 

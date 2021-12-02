@@ -15,6 +15,11 @@ public class Up implements Step {
     }
 
     @Override
+    public AimedPosition take(AimedPosition currentPosition) {
+        return new AimedPosition(currentPosition.getHorizontal(), currentPosition.getDepth(), currentPosition.getAim() - offset);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
