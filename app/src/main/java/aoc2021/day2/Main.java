@@ -12,5 +12,6 @@ public class Main {
         var solver = new Solver(inputLoader, stepConverter, stepExecutor);
 
         System.out.println("Part 1: " + solver.solve(DAY2_INPUT));
+        System.out.println("Part 2:" + solver.solveAimed(DAY2_INPUT));
     }
 }
