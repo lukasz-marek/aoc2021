@@ -23,14 +23,18 @@ public class GasAnalyzer {
         var index = 0;
         while (reports.size() > 1) {
             final var filterIndex = index;
-            var selectedSymbol = selector.apply(reports, filterIndex);
-            reports = reports.stream()
-                    .filter(report -> report.getValue().charAt(filterIndex) == selectedSymbol)
-                    .collect(Collectors.toUnmodifiableList());
+            reports = filterUnwantedReports(reports, selector, filterIndex);
             index++;
         }
         var chosenReport = reports.get(0);
         return Long.valueOf(chosenReport.getValue(), 2);
+    }
+
+    private List<ReportEntry> filterUnwantedReports(List<ReportEntry> reports, BiFunction<List<ReportEntry>, Integer, Character> selector, int filterIndex) {
+        var selectedSymbol = selector.apply(reports, filterIndex);
+        return reports.stream()
+                .filter(report -> report.getValue().charAt(filterIndex) == selectedSymbol)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private char findMostCommonSymbol(List<ReportEntry> reports, int index) {
