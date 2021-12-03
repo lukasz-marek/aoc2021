@@ -22,8 +22,7 @@ public class GasAnalyzer {
     private long decodeRating(List<ReportEntry> reports, BiFunction<List<ReportEntry>, Integer, Character> selector) {
         var index = 0;
         while (reports.size() > 1) {
-            final var filterIndex = index;
-            reports = filterUnwantedReports(reports, selector, filterIndex);
+            reports = filterUnwantedReports(reports, selector, index);
             index++;
         }
         var chosenReport = reports.get(0);
