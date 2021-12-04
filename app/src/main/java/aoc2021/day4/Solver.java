@@ -13,9 +13,15 @@ public class Solver {
         this.bingoExecutor = bingoExecutor;
     }
 
-    public int solve(String inputFile) {
+    public int solveFirstWinner(String inputFile) {
         var input = inputLoader.loadInput(inputFile);
         var puzzleData = inputConverter.convert(input);
         return bingoExecutor.findFirstWinningScore(puzzleData);
+    }
+
+    public int solveLastWinner(String inputFile) {
+        var input = inputLoader.loadInput(inputFile);
+        var puzzleData = inputConverter.convert(input);
+        return bingoExecutor.findLastWinningScore(puzzleData);
     }
 }

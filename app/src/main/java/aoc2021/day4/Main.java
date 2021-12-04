@@ -9,6 +9,7 @@ public class Main {
         var executor = new BingoExecutor();
         var solver = new Solver(inputLoader, inputConverter, executor);
 
-        System.out.println("Part 1: " + solver.solve("day4_1.txt"));
+        System.out.println("Part 1: " + solver.solveFirstWinner("day4_1.txt"));
+        System.out.println("Part 2: " + solver.solveLastWinner("day4_1.txt"));
     }
 }
