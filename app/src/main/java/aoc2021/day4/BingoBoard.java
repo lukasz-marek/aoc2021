@@ -28,12 +28,11 @@ public class BingoBoard {
                     mark(row, column, value);
     }
 
-
     public boolean isComplete() {
         return isAnyRowComplete() || isAnyColumnComplete();
     }
 
-    public int getScore() {
+    public int calculateScore() {
         var sum = 0;
 
         for (var i = 0; i < board.length; i++)
