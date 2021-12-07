@@ -2,6 +2,8 @@ package aoc2021.day5;
 
 import aoc2021.common.InputLoader;
 
+import java.util.stream.Collectors;
+
 public class Solver {
     private final InputLoader inputLoader;
     private final InputConverter inputConverter;
@@ -11,6 +13,16 @@ public class Solver {
         this.inputLoader = inputLoader;
         this.inputConverter = inputConverter;
         this.intersectionFinder = intersectionFinder;
+    }
+
+    public int solveWithoutDiagonal(String inputFile) {
+        var input = inputLoader.loadInput(inputFile);
+        var lines = inputConverter.convert(input)
+                .stream()
+                .filter(line -> line.isVertical() || line.isHorizontal())
+                .collect(Collectors.toUnmodifiableList());
+        var intersections = intersectionFinder.findIntersections(lines);
+        return intersections.size();
     }
 
     public int solve(String inputFile) {

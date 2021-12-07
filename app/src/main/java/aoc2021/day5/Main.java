@@ -10,6 +10,7 @@ public class Main {
         var finder = new IntersectionFinder();
         var solver = new Solver(loader, converter, finder);
 
-        System.out.println("Part1: " + solver.solve("day5_1.txt"));
+        System.out.println("Part1: " + solver.solveWithoutDiagonal("day5_1.txt"));
+        System.out.println("Part2: " + solver.solve("day5_1.txt"));
     }
 }

@@ -2,14 +2,17 @@ package aoc2021.day5;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public final class Line {
     private final Point from;
     private final Point to;
+    private final List<Point> coveredPoints;
 
     public Line(Point from, Point to) {
         this.from = from;
         this.to = to;
+        this.coveredPoints = computeCoveredPoints();
     }
 
     public boolean isHorizontal() {
@@ -21,35 +24,21 @@ public final class Line {
     }
 
     public Iterable<Point> getCoveredPoints() {
-        if (isHorizontal())
-            return getHorizontalPoints();
-        else if (isVertical())
-            return getVerticalPoints();
-        else
-            return Collections.emptyList();
+        return coveredPoints;
     }
 
-    private Iterable<Point> getHorizontalPoints() {
+    public List<Point> computeCoveredPoints() {
         var xCoordinateStart = Math.min(from.getX(), to.getX());
         var xCoordinateEnd = Math.max(from.getX(), to.getX());
-        var yCoordinate = from.getY();
-        var points = new ArrayList<Point>(Math.abs(from.getX() - to.getX()));
-
-        for (var x = xCoordinateStart; x <= xCoordinateEnd; x++)
-            points.add(new Point(x, yCoordinate));
-
-        return points;
-    }
-
-    private Iterable<Point> getVerticalPoints() {
         var yCoordinateStart = Math.min(from.getY(), to.getY());
         var yCoordinateEnd = Math.max(from.getY(), to.getY());
-        var xCoordinate = from.getX();
-        var points = new ArrayList<Point>(Math.abs(from.getY() - to.getY()));
 
-        for (var y = yCoordinateStart; y <= yCoordinateEnd; y++)
-            points.add(new Point(xCoordinate, y));
+        var points = new ArrayList<Point>();
 
-        return points;
+        for (var x = xCoordinateStart; x <= xCoordinateEnd; x++)
+            for (var y = yCoordinateStart; y <= yCoordinateEnd; y++)
+                points.add(new Point(x, y));
+
+        return Collections.unmodifiableList(points);
     }
 }
