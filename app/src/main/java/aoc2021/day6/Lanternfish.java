@@ -9,7 +9,7 @@ public final class Lanternfish {
         this.timer = timer;
     }
 
-    public int getTimer() {
+    public Integer getTimer() {
         return timer;
     }
 
