@@ -9,6 +9,7 @@ public class Main {
         var optimizer = new Optimizer();
         var solver = new Solver(loader, converter, optimizer);
 
-        System.out.println("Part 1: " + solver.solve());
+        System.out.println("Part 1: " + solver.solvePart1());
+        System.out.println("Part 2: " + solver.solvePart2());
     }
 }
