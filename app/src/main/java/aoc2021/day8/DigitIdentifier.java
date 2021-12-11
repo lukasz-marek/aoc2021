@@ -4,7 +4,16 @@ import java.util.OptionalInt;
 
 public class DigitIdentifier {
     public OptionalInt identify(DisplayOutput digit) {
-        switch (digit.getSignals().size()) {
+        return identify(digit.getSignals().size());
+    }
+
+
+    public OptionalInt identify(DisplayInput displayInput) {
+        return identify(displayInput.getSignals().size());
+    }
+
+    private OptionalInt identify(int numberOfSegments) {
+        switch (numberOfSegments) {
             case 2:
                 return OptionalInt.of(1);
             case 4:

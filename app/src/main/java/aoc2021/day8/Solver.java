@@ -9,14 +9,16 @@ public class Solver {
     private final InputLoader inputLoader;
     private final InputConverter inputConverter;
     private final DigitIdentifier digitIdentifier;
+    private final DigitDecoder digitDecoder;
 
     public Solver() {
         inputLoader = new InputLoader();
         inputConverter = new InputConverter();
         digitIdentifier = new DigitIdentifier();
+        digitDecoder = new DigitDecoder(digitIdentifier);
     }
 
-    public int solve() {
+    public int solvePart1() {
         var rawData = inputLoader.loadInput("day8_1.txt");
         var input = inputConverter.convert(rawData);
         var identifiedDigitsCount = input.stream()
@@ -26,5 +28,11 @@ public class Solver {
                 .filter(OptionalInt::isPresent)
                 .count();
         return (int) identifiedDigitsCount;
+    }
+
+    public int solvePart2() {
+        var rawData = inputLoader.loadInput("day8_1.txt");
+        var input = inputConverter.convert(rawData);
+        return input.parallelStream().mapToInt(digitDecoder::decode).sum();
     }
 }
