@@ -18,16 +18,15 @@ public class IntersectionFinder {
     }
 
     private Map<Point, Integer> merge(Map<Point, Integer> part1, Map<Point, Integer> part2) {
-        var result = new HashMap<Point, Integer>();
-        var keys = new HashSet<Point>();
-        keys.addAll(part1.keySet());
-        keys.addAll(part2.keySet());
+        var result = new HashMap<>(part1);
 
-        for (var key : keys) {
-            var partialResult1 = part1.getOrDefault(key, 0);
-            var partialResult2 = part2.getOrDefault(key, 0);
-            result.put(key, partialResult1 + partialResult2);
-        }
+        for (var entry : part2.entrySet())
+            if (result.containsKey(entry.getKey())) {
+                var newValue = result.get(entry.getKey()) + entry.getValue();
+                result.put(entry.getKey(), newValue);
+            } else
+                result.put(entry.getKey(), entry.getValue());
+
         return result;
     }
 
