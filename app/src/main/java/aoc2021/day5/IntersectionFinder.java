@@ -12,22 +12,32 @@ public class IntersectionFinder {
             for (var j = 0; j < i; j++)
                 intersectionsToVisit.add(Map.entry(i, j));
 
-        intersectionsToVisit.parallelStream()
-                .forEach(point -> updateIntersections(intersections, lines.get(point.getKey()), lines.get(point.getValue())));
-
-        synchronized (this) {
-            return intersections;
-        }
+        return intersectionsToVisit.parallelStream()
+                .map(point -> getIntersections(lines.get(point.getKey()), lines.get(point.getValue())))
+                .reduce(new HashMap<>(), this::merge);
     }
 
-    private void updateIntersections(HashMap<Point, Integer> intersections, Line line1, Line line2) {
+    private Map<Point, Integer> merge(Map<Point, Integer> part1, Map<Point, Integer> part2) {
+        var result = new HashMap<Point, Integer>();
+        var keys = new HashSet<Point>();
+        keys.addAll(part1.keySet());
+        keys.addAll(part2.keySet());
+
+        for (var key : keys) {
+            var partialResult1 = part1.getOrDefault(key, 0);
+            var partialResult2 = part2.getOrDefault(key, 0);
+            result.put(key, partialResult1 + partialResult2);
+        }
+        return result;
+    }
+
+    private Map<Point, Integer> getIntersections(Line line1, Line line2) {
+        var intersections = new HashMap<Point, Integer>();
         var commonPoints = new HashSet<>(line1.getCoveredPoints());
         commonPoints.retainAll(line2.getCoveredPoints());
-        synchronized (this) {
-            for (var commonPoint : commonPoints) {
-                var currentCount = intersections.getOrDefault(commonPoint, 0);
-                intersections.put(commonPoint, currentCount + 1);
-            }
+        for (var commonPoint : commonPoints) {
+            intersections.put(commonPoint, 1);
         }
+        return intersections;
     }
 }
