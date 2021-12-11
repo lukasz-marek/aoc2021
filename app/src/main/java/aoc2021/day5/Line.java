@@ -1,6 +1,7 @@
 package aoc2021.day5;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public final class Line {
         return from.getX() == to.getX();
     }
 
-    public Iterable<Point> getCoveredPoints() {
+    public Collection<Point> getCoveredPoints() {
         return coveredPoints;
     }
 
