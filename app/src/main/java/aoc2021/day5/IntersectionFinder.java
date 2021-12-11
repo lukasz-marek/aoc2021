@@ -21,11 +21,7 @@ public class IntersectionFinder {
         var result = new HashMap<>(part1);
 
         for (var entry : part2.entrySet())
-            if (result.containsKey(entry.getKey())) {
-                var newValue = result.get(entry.getKey()) + entry.getValue();
-                result.put(entry.getKey(), newValue);
-            } else
-                result.put(entry.getKey(), entry.getValue());
+            result.merge(entry.getKey(), entry.getValue(), Integer::sum);
 
         return result;
     }
