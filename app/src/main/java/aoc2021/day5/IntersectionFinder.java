@@ -4,8 +4,6 @@ import java.util.*;
 
 public class IntersectionFinder {
     public Map<Point, Integer> findIntersections(List<Line> lines) {
-        var intersections = new HashMap<Point, Integer>();
-
         var intersectionsToVisit = new ArrayList<Map.Entry<Integer, Integer>>();
 
         for (var i = 0; i < lines.size(); i++)
