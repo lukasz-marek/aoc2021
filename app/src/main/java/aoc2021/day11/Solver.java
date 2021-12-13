@@ -18,4 +18,10 @@ public class Solver {
         var grid = inputConverter.convert(inputData);
         return stepExecutor.execute(grid, 100);
     }
+
+    public int solvePart2(){
+        var inputData = inputLoader.loadInput("day11_1.txt");
+        var grid = inputConverter.convert(inputData);
+        return stepExecutor.executeUntilSynchronization(grid);
+    }
 }

@@ -13,7 +13,18 @@ public class StepExecutor {
         return totalFlashes;
     }
 
-    private long executeStep(int[][] grid) {
+    public int executeUntilSynchronization(int[][] grid) {
+        var totalItems = Arrays.stream(grid).mapToInt(row -> row.length).sum();
+        var steps = 0;
+        var flashes = -1;
+        do {
+            steps++;
+            flashes = executeStep(grid);
+        }while (flashes != totalItems);
+        return steps;
+    }
+
+    private int executeStep(int[][] grid) {
         increaseAllByOne(grid);
         var flashed = flash(grid);
         dischargeFlashed(grid, flashed);
