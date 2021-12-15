@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class InputConverter {
     private final Pattern coordinatesPattern = Pattern.compile("^(\\d+),(\\d+)$");
-    private final Pattern instructionPattern = Pattern.compile("^fold along x=(\\d+)$");
+    private final Pattern instructionPattern = Pattern.compile("^fold along (.)=(\\d+)$");
 
     public Problem convert(List<String> input) {
         char[][] paper = parsePaper(input);
@@ -39,10 +39,22 @@ public class InputConverter {
     private FoldInstruction convertInstruction(String line) {
         var match = instructionPattern.matcher(line);
         if (match.find()) {
-            var by = match.group(1);
-            return new FoldVertically(Integer.parseInt(by));
+            var axis = match.group(1);
+            var by = match.group(2);
+            return buildFoldInstruction(axis, by);
         }
         return null;
+    }
+
+    private FoldInstruction buildFoldInstruction(String axis, String by) {
+        switch (axis) {
+            case "x":
+                return new FoldVertically(Integer.parseInt(by));
+            case "y":
+                return new FoldHorizontally(Integer.parseInt(by));
+            default:
+                throw new IllegalArgumentException();
+        }
     }
 
     private char[][] convertPaper(List<String> description) {
