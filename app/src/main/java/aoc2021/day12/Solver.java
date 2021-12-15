@@ -13,9 +13,9 @@ public class Solver {
         pathCounter = new PathCounter();
     }
 
-    public long countPaths(){
+    public long countPaths(int maxVisits) {
         var input = inputLoader.loadInput("day12_1.txt");
         var waypoints = inputConverter.convert(input);
-        return pathCounter.countPaths(waypoints);
+        return pathCounter.countPaths(waypoints, maxVisits);
     }
 }
