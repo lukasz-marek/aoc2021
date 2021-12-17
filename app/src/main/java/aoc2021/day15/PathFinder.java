@@ -15,15 +15,18 @@ public class PathFinder {
         var unvisited = initializeUnvisitedPoints(map);
         var paths = initializePaths(map);
 
-        while (!unvisited.isEmpty()) {
-            var current = getCurrentPoint(unvisited, distances);
-            unvisited.remove(current);
-
-            var unvisitedNeighbours = getUnvisitedNeighbours(map, unvisited, current);
-            unvisitedNeighbours.forEach(neighbour -> updateDistance(distances, current, neighbour, map, paths));
-        }
+        while (!unvisited.isEmpty())
+            visitPoint(map, distances, unvisited, paths);
 
         return paths.get(end);
+    }
+
+    private void visitPoint(int[][] map, Map<Point, Integer> distances, Set<Point> unvisited, Map<Point, Path> paths) {
+        var current = getCurrentPoint(unvisited, distances);
+        unvisited.remove(current);
+
+        var unvisitedNeighbours = getUnvisitedNeighbours(map, unvisited, current);
+        unvisitedNeighbours.forEach(neighbour -> updateDistance(distances, current, neighbour, map, paths));
     }
 
     private List<Point> getUnvisitedNeighbours(int[][] map, Set<Point> unvisited, Point current) {
