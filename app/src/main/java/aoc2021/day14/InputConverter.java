@@ -11,11 +11,11 @@ public class InputConverter {
         return new Input(template, rules);
     }
 
-    private Map<String, String> convertRules(List<String> rawRules) {
-        var rules = new HashMap<String, String>();
+    private Map<String, Character> convertRules(List<String> rawRules) {
+        var rules = new HashMap<String, Character>();
         for (var rule : rawRules) {
             var parts = rule.trim().split(" -> ");
-            rules.put(parts[0], parts[1]);
+            rules.put(parts[0], parts[1].trim().toCharArray()[0]);
         }
         return rules;
     }

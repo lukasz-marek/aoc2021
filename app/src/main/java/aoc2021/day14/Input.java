@@ -4,9 +4,9 @@ import java.util.Map;
 
 public class Input {
     private final String template;
-    private final Map<String, String> rules;
+    private final Map<String, Character> rules;
 
-    public Input(String template, Map<String, String> rules) {
+    public Input(String template, Map<String, Character> rules) {
         this.template = template;
         this.rules = Map.copyOf(rules);
     }
@@ -15,7 +15,7 @@ public class Input {
         return template;
     }
 
-    public Map<String, String> getRules() {
+    public Map<String, Character> getRules() {
         return rules;
     }
 
