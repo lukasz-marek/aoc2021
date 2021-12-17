@@ -19,7 +19,7 @@ public class Solver {
         var rawInput = inputLoader.loadInput("day14_1.txt");
         var input = inputConverter.convert(rawInput);
         var inserter = new PolymerInserter(input.getRules());
-        var resultPolymer = inserter.insert(input.getTemplate(), 1);
+        var resultPolymer = inserter.insert(input.getTemplate(), 10);
         var max = analyzer.countMostCommon(resultPolymer);
         var min = analyzer.countLeastCommon(resultPolymer);
         return max.subtract(min);

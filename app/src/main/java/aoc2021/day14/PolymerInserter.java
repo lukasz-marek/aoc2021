@@ -22,21 +22,23 @@ public class PolymerInserter {
     }
 
     private void executeRules(Map<String, BigInteger> pairs, Map<Character, BigInteger> polymers) {
+        var outputPairs = new HashMap<String, BigInteger>();
         for (var rule : insertionRules.entrySet()) {
             if (pairs.containsKey(rule.getKey())) {
-                executeRule(rule, pairs, polymers);
+                executeRule(rule, pairs, polymers, outputPairs);
             }
         }
+        pairs.clear();
+        pairs.putAll(outputPairs);
     }
 
-    private void executeRule(Map.Entry<String, Character> rule, Map<String, BigInteger> pairs, Map<Character, BigInteger> polymers) {
+    private void executeRule(Map.Entry<String, Character> rule, Map<String, BigInteger> pairs, Map<Character, BigInteger> polymers, Map<String, BigInteger> outputPairs) {
         var pair = rule.getKey();
         var polymer = rule.getValue();
         var pairsCount = pairs.get(pair);
 
         updateCount(polymers, polymer, pairsCount);
-        pairs.remove(pair);
-        addNewPairs(pair, polymer, pairs, pairsCount);
+        addNewPairs(pair, polymer, outputPairs, pairsCount);
     }
 
     private void addNewPairs(String pair, Character polymer, Map<String, BigInteger> pairs, BigInteger count) {
