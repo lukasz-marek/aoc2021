@@ -1,63 +1,81 @@
 package aoc2021.day15;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.stream.Stream;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class PathFinder {
     public Path findPathWithLowestRisk(int[][] map) {
         var start = new Point(0, 0);
-        var end = new Point(map.length, map[map.length - 1].length);
+        var end = new Point(map.length - 1, map[map.length - 1].length - 1);
         return findPath(start, end, map);
     }
 
     private Path findPath(Point start, Point end, int[][] map) {
-        var queue = getInitialQueue(start, map);
+        var distances = initializeDistances(start, map);
+        var unvisited = initializeUnvisitedPoints(map);
+        var paths = initializePaths(map);
 
-        while (!queue.isEmpty()) {
-            var currentPath = queue.poll();
-            if (isPointReached(currentPath, end)) return currentPath;
+        while (!unvisited.isEmpty()) {
+            var current = getCurrentPoint(unvisited, distances);
+            unvisited.remove(current);
 
-            var lastPoint = getLastVisitedPoint(currentPath);
-            var pointsToVisit = getPointsToVisit(map, currentPath, lastPoint);
-
-            pointsToVisit.forEach(point -> queue.add(currentPath.withPoint(point, map[point.getX()][point.getY()])));
+            var unvisitedNeighbours = getUnvisitedNeighbours(map, unvisited, current);
+            unvisitedNeighbours.forEach(neighbour -> updateDistance(distances, current, neighbour, map, paths));
         }
 
-        throw new IllegalStateException("Failed to find a path");
+        return paths.get(end);
     }
 
-    private boolean isPointReached(Path currentPath, Point end) {
-        return currentPath.getUniquePoints().contains(end);
+    private List<Point> getUnvisitedNeighbours(int[][] map, Set<Point> unvisited, Point current) {
+        return getNearby(current, map).stream().filter(unvisited::contains).collect(Collectors.toUnmodifiableList());
     }
 
-    private Point getLastVisitedPoint(Path currentPath) {
-        return currentPath.getPoints().get(currentPath.getPoints().size() - 1);
+    private Point getCurrentPoint(Set<Point> unvisited, Map<Point, Integer> distances) {
+        return unvisited.stream().min(Comparator.comparing(distances::get)).get();
     }
 
-    private Stream<Point> getPointsToVisit(int[][] map, Path currentPath, Point lastPoint) {
-        return getAdjacentPoints(lastPoint, map).stream()
-                .filter(point -> !isPointReached(currentPath, point));
+    private void updateDistance(Map<Point, Integer> distances, Point point, Point neighbour, int[][] map, Map<Point, Path> paths) {
+        var currentDistance = distances.get(neighbour);
+        var newDistance = distances.get(point) + map[neighbour.getX()][neighbour.getY()];
+        if (currentDistance > newDistance) {
+            distances.put(neighbour, newDistance);
+            paths.put(neighbour, paths.get(point).withPoint(neighbour));
+        }
     }
 
-    private PriorityQueue<Path> getInitialQueue(Point start, int[][] map) {
-        var queue = new PriorityQueue<Path>();
-        var initialPath = new ArrayList<Point>();
-        initialPath.add(start);
-        queue.add(new Path(initialPath, map[0][0]));
-        return queue;
-    }
-
-    private List<Point> getAdjacentPoints(Point point, int[][] map) {
-        var points = new ArrayList<Point>(4);
+    private List<Point> getNearby(Point point, int[][] map) {
+        var neighbours = new ArrayList<Point>(4);
         for (var x = point.getX() - 1; x <= point.getX() + 1; x++)
-            if (x >= 0 && x < map.length)
-                for (var y = point.getY() - 1; y <= point.getY() + 1; y++)
-                    if (y >= 0 && y < map[x].length)
+            for (var y = point.getY() - 1; y <= point.getY() + 1; y++)
+                if (x >= 0 && y >= 0)
+                    if (x < map.length && y < map[x].length)
                         if (x == point.getX() || y == point.getY())
-                            if (x != point.getX() || y != point.getY())
-                                points.add(new Point(x, y));
-        return points;
+                            neighbours.add(new Point(x, y));
+        return neighbours;
+    }
+
+    private Map<Point, Path> initializePaths(int[][] map) {
+        var paths = new LinkedHashMap<Point, Path>();
+        for (var x = 0; x < map.length; x++)
+            for (var y = 0; y < map[x].length; y++)
+                paths.put(new Point(x, y), new Path(Collections.emptyList()));
+        return paths;
+    }
+
+    private Map<Point, Integer> initializeDistances(Point start, int[][] map) {
+        var distances = new LinkedHashMap<Point, Integer>();
+        for (var x = 0; x < map.length; x++)
+            for (var y = 0; y < map[x].length; y++)
+                distances.put(new Point(x, y), Integer.MAX_VALUE);
+        distances.put(start, 0);
+        return distances;
+    }
+
+    private Set<Point> initializeUnvisitedPoints(int[][] map) {
+        var unvisited = new LinkedHashSet<Point>();
+        for (var x = 0; x < map.length; x++)
+            for (var y = 0; y < map[x].length; y++)
+                unvisited.add(new Point(x, y));
+        return unvisited;
     }
 }
