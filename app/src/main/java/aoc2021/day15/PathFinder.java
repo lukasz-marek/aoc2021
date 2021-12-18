@@ -15,7 +15,7 @@ public class PathFinder {
         var unvisited = initializeUnvisitedPoints(map);
         var paths = initializePaths(map);
 
-        while (!unvisited.isEmpty())
+        while (unvisited.contains(end))
             visitPoint(map, distances, unvisited, paths);
 
         return paths.get(end);
