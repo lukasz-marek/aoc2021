@@ -1,7 +1,7 @@
 package aoc2021.day15;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PathFinder {
     public Path findPathWithLowestRisk(int[][] map) {
@@ -29,8 +29,8 @@ public class PathFinder {
         unvisitedNeighbours.forEach(neighbour -> updateDistance(distances, current, neighbour, map, paths));
     }
 
-    private List<Point> getUnvisitedNeighbours(int[][] map, Set<Point> unvisited, Point current) {
-        return getNearby(current, map).stream().filter(unvisited::contains).collect(Collectors.toUnmodifiableList());
+    private Stream<Point> getUnvisitedNeighbours(int[][] map, Set<Point> unvisited, Point current) {
+        return getNearby(current, map).filter(unvisited::contains);
     }
 
     private Point getCurrentPoint(Set<Point> unvisited, Map<Point, Integer> distances) {
@@ -46,15 +46,15 @@ public class PathFinder {
         }
     }
 
-    private List<Point> getNearby(Point point, int[][] map) {
-        var neighbours = new ArrayList<Point>(4);
+    private Stream<Point> getNearby(Point point, int[][] map) {
+        var neighbours = Stream.<Point>builder();
         for (var x = point.getX() - 1; x <= point.getX() + 1; x++)
             for (var y = point.getY() - 1; y <= point.getY() + 1; y++)
                 if (x >= 0 && y >= 0)
                     if (x < map.length && y < map[x].length)
                         if (x == point.getX() || y == point.getY())
                             neighbours.add(new Point(x, y));
-        return neighbours;
+        return neighbours.build();
     }
 
     private Map<Point, Path> initializePaths(int[][] map) {
