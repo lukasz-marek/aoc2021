@@ -34,7 +34,7 @@ public class PathFinder {
     }
 
     private Point getCurrentPoint(Set<Point> unvisited, Map<Point, Integer> distances) {
-        return unvisited.stream().min(Comparator.comparing(distances::get)).get();
+        return unvisited.parallelStream().min(Comparator.comparing(distances::get)).get();
     }
 
     private void updateDistance(Map<Point, Integer> distances, Point point, Point neighbour, int[][] map, Map<Point, Path> paths) {
