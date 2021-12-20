@@ -24,4 +24,8 @@ public final class LiteralPacket implements Packet {
     public <T> T accept(PacketVisitor<T> visitor) {
         return visitor.visit(this);
     }
+
+    public long getValue() {
+        return value;
+    }
 }

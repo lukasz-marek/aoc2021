@@ -10,7 +10,11 @@ public class Main {
         var decodedInput = converter.convertToBinary(input);
         var parser = new PacketParser();
         var parsed = parser.parse(decodedInput);
-        var visitor = new VersionAddingVisitor();
-        System.out.println("Part 1:" + parsed.accept(visitor));
+
+        var versionVisitor = new VersionAddingVisitor();
+        System.out.println("Part 1:" + parsed.accept(versionVisitor));
+
+        var evaluatingVisitor = new EvaluatingVisitor();
+        System.out.println("Part 2: " + parsed.accept(evaluatingVisitor));
     }
 }
