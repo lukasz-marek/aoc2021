@@ -21,7 +21,7 @@ public class HexToBinaryConverter {
             .put('C', "1100")
             .put('D', "1101")
             .put('E', "1110")
-            .put('D', "1111")
+            .put('F', "1111")
             .build();
 
     public String convertToBinary(String hex) {
