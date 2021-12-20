@@ -27,15 +27,12 @@ public class PacketParser {
     private OperatorPacket parseOperator(int version, int typeId, Queue<Character> bits) {
         var lengthTypeId = nextLengthTypeId(bits);
         var containedPackets = new ArrayList<Packet>();
-        var consumedBits = VERSION_LENGTH + TYPE_ID_LENGTH + LENGTH_TYPE_ID_LENGTH;
-        if (lengthTypeId == 0) {
-            consumedBits += PACKETS_LENGTH_LENGTH;
+
+        if (lengthTypeId == 0)
             containedPackets.addAll(parseContainedPacketsByLength(bits));
-        } else if (lengthTypeId == 1) {
-            consumedBits += PACKETS_NUMBER_LENGTH;
+        else if (lengthTypeId == 1)
             containedPackets.addAll(parseContainedPacketsByNumber(bits));
-        }
-        skipTrailingZeroes(consumedBits, bits);
+
         return new OperatorPacket(version, typeId, containedPackets);
     }
 
@@ -59,17 +56,14 @@ public class PacketParser {
     private LiteralPacket parseLiteral(int version, Queue<Character> bits) {
         var byteBuffer = new StringBuilder();
         var isLast = false;
-        var consumedBits = VERSION_LENGTH + TYPE_ID_LENGTH;
         do {
             var nextGroup = nextLiteralGroup(bits);
             byteBuffer.append(getGroupValue(nextGroup));
-            consumedBits += LITERAL_GROUP_LENGTH;
             isLast = isLastLiteralGroup(nextGroup);
         } while (!isLast);
-        skipTrailingZeroes(consumedBits, bits);
 
         var encodedLiteral = byteBuffer.toString();
-        var literalValue = Integer.parseInt(encodedLiteral, 2);
+        var literalValue = Long.parseLong(encodedLiteral, 2);
 
         return new LiteralPacket(version, literalValue);
     }
@@ -84,14 +78,6 @@ public class PacketParser {
         var takenBits = takeBits(bits, PACKETS_NUMBER_LENGTH);
         var binary = takenBits.toString();
         return Integer.parseInt(binary, 2);
-    }
-
-    private void skipTrailingZeroes(int consumedBits, Queue<Character> bits) {
-        var skipped = 0;
-        while ((skipped + consumedBits) % 4 != 0) {
-            bits.remove();
-            skipped++;
-        }
     }
 
     private boolean isLastLiteralGroup(String group) {

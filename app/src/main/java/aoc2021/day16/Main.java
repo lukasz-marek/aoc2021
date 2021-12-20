@@ -11,6 +11,6 @@ public class Main {
         var parser = new PacketParser();
         var parsed = parser.parse(decodedInput);
         var visitor = new VersionAddingVisitor();
-        System.out.println("Part 1: " + parsed.accept(visitor));
+        System.out.println("Part 1:" + parsed.accept(visitor));
     }
 }

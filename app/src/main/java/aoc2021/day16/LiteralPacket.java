@@ -3,9 +3,9 @@ package aoc2021.day16;
 public final class LiteralPacket implements Packet {
     public final static int LITERAL_ID = 4;
     private final int version;
-    private final int value;
+    private final long value;
 
-    public LiteralPacket(int version, int value) {
+    public LiteralPacket(int version, long value) {
         this.version = version;
         this.value = value;
     }
