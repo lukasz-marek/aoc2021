@@ -12,4 +12,23 @@ public final class OperatorPacket implements Packet {
         this.typeId = typeId;
         this.containedPackets = List.copyOf(containedPackets);
     }
+
+    @Override
+    public int getVersion() {
+        return version;
+    }
+
+    @Override
+    public int getOperatorId() {
+        return typeId;
+    }
+
+    @Override
+    public <T> T accept(PacketVisitor<T> visitor) {
+        return visitor.visit(this);
+    }
+
+    public List<Packet> getContainedPackets() {
+        return containedPackets;
+    }
 }

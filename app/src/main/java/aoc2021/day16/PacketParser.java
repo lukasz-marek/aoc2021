@@ -9,7 +9,6 @@ public class PacketParser {
     private final int LENGTH_TYPE_ID_LENGTH = 1;
     private final int PACKETS_LENGTH_LENGTH = 15;
     private final int PACKETS_NUMBER_LENGTH = 11;
-    private final int LITERAL_PACKET_TYPE_ID = 4;
 
     public Packet parse(String binaryPacket) {
         var bits = toBitQueue(binaryPacket);
@@ -19,7 +18,7 @@ public class PacketParser {
     private Packet parsePacket(Queue<Character> bits) {
         var version = nextPacketVersion(bits);
         var typeId = nextPacketTypeId(bits);
-        if (typeId == LITERAL_PACKET_TYPE_ID)
+        if (typeId == LiteralPacket.LITERAL_ID)
             return parseLiteral(version, bits);
         else
             return parseOperator(version, typeId, bits);
