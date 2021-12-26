@@ -28,4 +28,19 @@ public class VelocityFinder {
                 .map(OptionalInt::getAsInt)
                 .max(Comparator.naturalOrder());
     }
+
+    public long countValidVelocities(TargetArea targetArea) {
+        var maxX = Math.max(Math.abs(targetArea.getFromX()), Math.abs(targetArea.getToX()));
+        var maxY = Math.max(Math.abs(targetArea.getFromY()), Math.abs(targetArea.getToY()));
+        var initialVelocities = Stream.<Velocity>builder();
+        for (var x = -maxX; x <= maxX; x++)
+            for (var y = -maxY; y <= maxY; y++)
+                initialVelocities.add(new Velocity(x, y));
+
+        return initialVelocities.build()
+                .sequential()
+                .map(velocity -> simulator.simulate(velocity, targetArea))
+                .filter(OptionalInt::isPresent)
+                .count();
+    }
 }
