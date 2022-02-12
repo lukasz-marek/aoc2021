@@ -1,14 +1,13 @@
 package aoc2021.day5;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public final class Line {
     private final Point from;
     private final Point to;
-    private final List<Point> coveredPoints;
+    private final Set<Point> coveredPoints;
 
     public Line(Point from, Point to) {
         this.from = from;
@@ -24,22 +23,22 @@ public final class Line {
         return from.getX() == to.getX();
     }
 
-    public Collection<Point> getCoveredPoints() {
+    public Set<Point> getCoveredPoints() {
         return coveredPoints;
     }
 
-    public List<Point> computeCoveredPoints() {
+    public Set<Point> computeCoveredPoints() {
         var xCoordinateStart = Math.min(from.getX(), to.getX());
         var xCoordinateEnd = Math.max(from.getX(), to.getX());
         var yCoordinateStart = Math.min(from.getY(), to.getY());
         var yCoordinateEnd = Math.max(from.getY(), to.getY());
 
-        var points = new ArrayList<Point>();
+        var points = new LinkedHashSet<Point>();
 
         for (var x = xCoordinateStart; x <= xCoordinateEnd; x++)
             for (var y = yCoordinateStart; y <= yCoordinateEnd; y++)
                 points.add(new Point(x, y));
 
-        return Collections.unmodifiableList(points);
+        return Collections.unmodifiableSet(points);
     }
 }

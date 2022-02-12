@@ -15,20 +15,18 @@ public class Solver {
         this.intersectionFinder = intersectionFinder;
     }
 
-    public int solveWithoutDiagonal(String inputFile) {
+    public long solveWithoutDiagonal(String inputFile) {
         var input = inputLoader.loadInput(inputFile);
         var lines = inputConverter.convert(input)
                 .stream()
                 .filter(line -> line.isVertical() || line.isHorizontal())
                 .collect(Collectors.toUnmodifiableList());
-        var intersections = intersectionFinder.findIntersections(lines);
-        return intersections.size();
+        return intersectionFinder.findIntersections(lines);
     }
 
-    public int solve(String inputFile) {
+    public long solve(String inputFile) {
         var input = inputLoader.loadInput(inputFile);
         var lines = inputConverter.convert(input);
-        var intersections = intersectionFinder.findIntersections(lines);
-        return intersections.size();
+        return intersectionFinder.findIntersections(lines);
     }
 }
