@@ -33,6 +33,51 @@ class SplittingVisitorTest {
 
     @ParameterizedTest
     @MethodSource("leafsAndNodes")
+    public void splitsLeafNodeOnTheLeftNested(Leaf leaf, Pair expectedPair) {
+        // given
+        var node = Pair.of(Pair.of(leaf, Leaf.of(5)), Leaf.of(10));
+
+        // when
+        var result = node.accept(tested);
+
+        // then
+        Assertions.assertTrue(result);
+        Assertions.assertEquals(Leaf.of(10), node.getRight());
+        Assertions.assertEquals(Pair.of(expectedPair, Leaf.of(5)), node.getLeft());
+    }
+
+    @ParameterizedTest
+    @MethodSource("leafsAndNodes")
+    public void splitsLeafNodeOnTheRightNested(Leaf leaf, Pair expectedPair) {
+        // given
+        var node = Pair.of(Leaf.of(9), Pair.of(Leaf.of(5), leaf));
+
+        // when
+        var result = node.accept(tested);
+
+        // then
+        Assertions.assertTrue(result);
+        Assertions.assertEquals(Leaf.of(9), node.getLeft());
+        Assertions.assertEquals(Pair.of(Leaf.of(5), expectedPair), node.getRight());
+    }
+
+    @ParameterizedTest
+    @MethodSource("leafsAndNodes")
+    public void splitsLeafNodeInTheMiddleNested(Leaf leaf, Pair expectedPair) {
+        // given
+        var node = Pair.of(Leaf.of(9), Pair.of(leaf, Leaf.of(5)));
+
+        // when
+        var result = node.accept(tested);
+
+        // then
+        Assertions.assertTrue(result);
+        Assertions.assertEquals(Leaf.of(9), node.getLeft());
+        Assertions.assertEquals(Pair.of(expectedPair, Leaf.of(5)), node.getRight());
+    }
+
+    @ParameterizedTest
+    @MethodSource("leafsAndNodes")
     public void splitsLeafNodeOnTheRight(Leaf leaf, Pair expectedPair) {
         // given
         var node = Pair.of(Leaf.of(9), leaf);
@@ -59,5 +104,4 @@ class SplittingVisitorTest {
         Assertions.assertEquals(Leaf.of(9), node.getLeft());
         Assertions.assertEquals(Leaf.of(9), node.getRight());
     }
-
 }
