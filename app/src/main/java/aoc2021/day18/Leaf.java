@@ -38,4 +38,9 @@ public class Leaf implements Node {
     public int hashCode() {
         return Objects.hash(value);
     }
+
+    @Override
+    public String toString(){
+        return Integer.toString(value);
+    }
 }

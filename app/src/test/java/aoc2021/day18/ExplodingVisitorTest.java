@@ -21,4 +21,23 @@ class ExplodingVisitorTest {
         Assertions.assertEquals(expected, node);
     }
 
+    @Test
+    public void explodesInTheMiddle() {
+        // given
+        var node = Pair.of(Pair.of(Pair.of(Pair.of(Leaf.of(6), Pair.of(4, 5)), Leaf.of(6)), Leaf.of(6)), Leaf.of(6));
+
+        // when
+        var result = node.accept(tested);
+
+        // then
+        Assertions.assertTrue(result);
+        var expected = Pair.of(Pair.of(Pair.of(Pair.of(Leaf.of(10), Leaf.of(0)), Leaf.of(11)), Leaf.of(6)), Leaf.of(6));
+        Assertions.assertEquals(expected, node);
+    }
+
+    @Test
+    public void explodesOnRight() {
+        throw new RuntimeException("");
+    }
+
 }

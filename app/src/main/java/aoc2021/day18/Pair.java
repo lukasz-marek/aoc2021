@@ -52,4 +52,9 @@ public class Pair implements Node {
     public int hashCode() {
         return Objects.hash(left, right);
     }
+
+    @Override
+    public String toString() {
+        return "[" + left + ", " + right + "]";
+    }
 }
